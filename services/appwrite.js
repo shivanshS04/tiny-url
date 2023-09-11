@@ -1,11 +1,40 @@
-import { Client, Databases, ID } from "appwrite";
-import { NextResponse } from "next/server";
+import { Account, Client, Databases, ID } from "appwrite";
 
 const client = new Client();
 
 client
   .setEndpoint("https://cloud.appwrite.io/v1")
   .setProject("64fc03471ea3ee466d78");
+
+const account = new Account(client);
+
+export async function createUser(email, password) {
+  let res = await account.create(ID.unique(), email, password).then(
+    (response) => {
+      console.log(response);
+      return "success";
+    },
+    (error) => {
+      console.error(error);
+      return error;
+    }
+  );
+  return res;
+}
+
+export async function login(email, password) {
+  let res = await account.createEmailSession(email, password).then(
+    (response) => {
+      console.log(response);
+      return "success";
+    },
+    (error) => {
+      console.error(error);
+      return error;
+    }
+  );
+  return res;
+}
 
 const database = new Databases(client);
 
