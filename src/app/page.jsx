@@ -46,8 +46,8 @@ export default function page() {
       })
     }
     else {
-      setResultUrl('http://' + window.location.host + "/" + result)
-      navigator.clipboard.writeText('http://' + window.location.host + "/" + result)
+      setResultUrl('https://' + window.location.host + "/" + result)
+      navigator.clipboard.writeText('https://' + window.location.host + "/" + result)
       toast.success('copied short URL to clipboard', {
         duration: 1500
       })
@@ -128,12 +128,12 @@ export default function page() {
               >
                 <div
                 >
-                  <h1 className="text-white font-mono ">http://{window.location.host}/{item.url_id}</h1>
+                  <h1 className="text-white font-mono ">https://{window.location.host}/{item.url_id}</h1>
                   <h3> {item.url} </h3>
                 </div>
                 <div className="float-right flex gap-4" >
                   <BsClipboard data-tooltip-id="tooltip" data-tooltip-content='Copy Link !' onClick={() => {
-                    navigator.clipboard.writeText('http://' + window.location.host + "/" + item.url_id)
+                    navigator.clipboard.writeText('https://' + window.location.host + "/" + item.url_id)
                     toast.success('copied link to clipboard !', {
                       duration: 1500
                     })
