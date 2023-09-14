@@ -38,7 +38,7 @@ export async function login(email, password) {
 
 const database = new Databases(client);
 
-export function createUrlRecord(url_id, url) {
+export function createUrlRecord(url_id, url, user) {
   database
     .createDocument(
       "64fc044ee5653df6e0ae",
@@ -47,6 +47,7 @@ export function createUrlRecord(url_id, url) {
       {
         url_id,
         url,
+        user,
       }
     )
     .then(
@@ -82,3 +83,22 @@ export async function getUrlRecord(url_id) {
     );
   return result;
 }
+
+export async function getUserUrls(user) {
+  let result = await database
+    .listDocuments("64fc044ee5653df6e0ae", "64fc045f87351bf03f53")
+    .then(
+      function (response) {
+        const data = response.documents.filter((item) => item.user == user);
+        return data;
+      },
+      function (error) {
+        return error;
+      }
+    );
+  return result;
+}
+
+
+
+<script src="https://gist.github.com/shivanshS04/e621504fc088d80d06891f398ca96b87.js"></script>;

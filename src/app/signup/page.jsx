@@ -1,10 +1,13 @@
 'use client'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, redirect } from 'next/navigation'
 import { createUser } from '../../../services/appwrite'
 import { Toaster, toast } from 'react-hot-toast'
 
 export default function page() {
+    if (localStorage.getItem('user-email')) {
+        redirect('/')
+    }
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter();
