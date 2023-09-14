@@ -16,7 +16,7 @@ export default function page() {
   const [url, setUrl] = useState('')
   const [resultUrl, setResultUrl] = useState()
   const [userUrls, setUserUrls] = useState([])
-  const [renderer, setRenderer] = useState(0)
+  var renderer = 0;
   const router = useRouter();
 
   async function getRecords() {
@@ -51,7 +51,7 @@ export default function page() {
       toast.success('copied short URL to clipboard', {
         duration: 1500
       })
-      setRenderer(renderer + 1)
+      renderer++;
 
     }
   }
@@ -66,11 +66,14 @@ export default function page() {
     setLoggedInUser()
   }
   async function handleDelete(doc_id) {
+    toast.loading('Deleting....')
     const result = await deleteUrlRecord(doc_id);
+    toast.dismiss()
     if (result != 'error') {
       toast.success('Url Deleted Successfully !', {
         duration: 1500
       })
+      renderer--;
     }
     else {
       toast.error('error deleting the url !', {
@@ -85,7 +88,7 @@ export default function page() {
         {
           loggedInUser
             ? <>
-              <AiOutlineUser className="mt-2 cursor-pointer text-red-400 hover:bg-red-400 hover:text-black rounded-full transition-all duration-300" size={40} data-tooltip-id="user-icon" data-tooltip-content={loggedInUser} />
+              <AiOutlineUser className="mt-2 cursor-pointer text-red-400 hover:bg-red-400 hover:text-black rounded-full transition-all duration-300" size={40} data-tooltip-id="tooltip" data-tooltip-content={loggedInUser} />
               <button className="text-red-400 bg-black border-red-400 border-2 font-bold mt-3 lg:w-1/12 sm:w-20 p-2 rounded-xl " onClick={() => handleLogout()} >Log Out</button>
             </>
             : <>
@@ -121,7 +124,7 @@ export default function page() {
 
             userUrls.map((item, index) => (
               <div key={index}
-                className="flex justify-between gap-3 items-center last:mb-12 sm:w-full md:w-2/4 p-5 text-left text-white border-2 border-red-400 cursor-pointer"
+                className="flex justify-between gap-3 items-center last:mb-12 sm:w-full md:w-2/4 p-5 text-left text-white border-2 border-red-400"
               >
                 <div
                 >
@@ -129,13 +132,13 @@ export default function page() {
                   <h3> {item.url} </h3>
                 </div>
                 <div className="float-right flex gap-4" >
-                  <BsClipboard onClick={() => {
+                  <BsClipboard data-tooltip-id="tooltip" data-tooltip-content='Copy Link !' onClick={() => {
                     navigator.clipboard.writeText('http://' + window.location.host + "/" + item.url_id)
                     toast.success('copied link to clipboard !', {
                       duration: 1500
                     })
                   }} className="text-white" size={25} />
-                  <BsTrash className="text-red-400" size={25} onClick={() => {
+                  <BsTrash data-tooltip-id="tooltip" data-tooltip-content='Delete' className="text-red-400" size={25} onClick={() => {
                     handleDelete(item.$id)
                   }} />
                 </div>
@@ -150,7 +153,7 @@ export default function page() {
 
       </div>
 
-      <Tooltip id="user-icon" />
+      <Tooltip id="tooltip" />
       <Toaster />
     </div >
   )

@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { login } from '../../../services/appwrite'
 import { Toaster, toast } from 'react-hot-toast'
@@ -7,9 +7,13 @@ import { redirect } from 'next/navigation'
 
 export default function page() {
 
-    if (localStorage && localStorage.getItem('user-email')) {
-        redirect('/')
-    }
+    useEffect(() => {
+        if (localStorage) {
+            if (localStorage.getItem('user-email')) {
+                redirect('/')
+            }
+        }
+    })
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
