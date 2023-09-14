@@ -16,7 +16,6 @@ export default function page() {
   const [url, setUrl] = useState('')
   const [resultUrl, setResultUrl] = useState()
   const [userUrls, setUserUrls] = useState([])
-  var renderer = 0;
   const router = useRouter();
 
   async function getRecords() {
@@ -33,7 +32,8 @@ export default function page() {
       setLoggedInUser(localStorage.getItem('user-email'));
       getRecords()
     }
-  }, [loggedInUser, renderer])
+
+  }, [loggedInUser])
 
   const handleClick = async () => {
     const result = nanoid(7)
@@ -53,7 +53,7 @@ export default function page() {
       toast.success('copied short URL to clipboard', {
         duration: 1500
       })
-      renderer++;
+      setUserUrls(prev => [result, ...prev])
 
     }
   }
@@ -75,7 +75,6 @@ export default function page() {
       toast.success('Url Deleted Successfully !', {
         duration: 1500
       })
-      renderer--;
     }
     else {
       toast.error('error deleting the url !', {
@@ -142,6 +141,7 @@ export default function page() {
                   }} className="text-white" size={25} />
                   <BsTrash data-tooltip-id="tooltip" data-tooltip-content='Delete' className="text-red-400" size={25} onClick={() => {
                     handleDelete(item.$id)
+                    setUserUrls(prev => prev.filter(urlObj => item.$id != urlObj.$id))
                   }} />
                 </div>
 
