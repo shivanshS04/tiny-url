@@ -35,13 +35,15 @@ export default function page() {
     }
   }, [loggedInUser, renderer])
 
-  const handleClick = () => {
+  const handleClick = async () => {
     const result = nanoid(7)
-    const response = createUrlRecord(
+    toast.loading('Compressing URL...')
+    const response = await createUrlRecord(
       result, url, loggedInUser
     )
+    toast.dismiss()
     if (response == 'error') {
-      toast.error('error', {
+      toast.error('Please enter a valid url', {
         duration: 2000
       })
     }

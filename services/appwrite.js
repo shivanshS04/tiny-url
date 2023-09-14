@@ -38,8 +38,8 @@ export async function login(email, password) {
 
 const database = new Databases(client);
 
-export function createUrlRecord(url_id, url, user) {
-  database
+export async function createUrlRecord(url_id, url, user) {
+  let result = await database
     .createDocument(
       "64fc044ee5653df6e0ae",
       "64fc045f87351bf03f53",
@@ -60,6 +60,8 @@ export function createUrlRecord(url_id, url, user) {
         return "error";
       }
     );
+
+  return result;
 }
 
 export async function getUrlRecord(url_id) {
