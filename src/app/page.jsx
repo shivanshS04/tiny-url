@@ -53,7 +53,10 @@ export default function page() {
       toast.success('copied short URL to clipboard', {
         duration: 1500
       })
-      setUserUrls(prev => [result, ...prev])
+      setUserUrls(prev => [{
+        url_id: result,
+        url
+      }, ...prev])
 
     }
   }
@@ -98,7 +101,7 @@ export default function page() {
             </>
         }
       </nav>
-      <div className={`${loggedInUser && 'mt-72'} w-screen h-full flex justify-center items-center flex-col `}>
+      <div className={`${loggedInUser && 'mt-52'} w-screen h-full flex justify-center items-center flex-col `}>
         <form onSubmit={(e) => {
           e.preventDefault();
           handleClick()
