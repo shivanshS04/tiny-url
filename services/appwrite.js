@@ -93,12 +93,23 @@ export async function getUserUrls(user) {
         return data;
       },
       function (error) {
-        return error;
+        return "error";
       }
     );
   return result;
 }
 
-
-
-<script src="https://gist.github.com/shivanshS04/e621504fc088d80d06891f398ca96b87.js"></script>;
+export async function deleteUrlRecord(doc_id) {
+  let result = database
+    .deleteDocument("64fc044ee5653df6e0ae", "64fc045f87351bf03f53", doc_id)
+    .then(
+      (response) => {
+        console.log(response);
+        return;
+      },
+      (error) => {
+        return error;
+      }
+    );
+  return result;
+}

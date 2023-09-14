@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 
 export default function page() {
 
-    if (localStorage.getItem('user-email')) {
+    if (localStorage && localStorage.getItem('user-email')) {
         redirect('/')
     }
 

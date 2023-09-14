@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect } from "react";
-import { createUrlRecord, getUserUrls } from '../../services/appwrite'
+import { createUrlRecord, getUserUrls, deleteUrlRecord } from '../../services/appwrite'
 import { nanoid } from "nanoid";
 import { Toaster, toast } from "react-hot-toast";
 import { useRouter } from 'next/navigation'
 import { AiOutlineUser } from 'react-icons/ai'
 import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
+import { BsClipboard, BsTrash } from 'react-icons/bs'
 
 
 
@@ -21,7 +22,6 @@ export default function page() {
   async function getRecords() {
 
     const result = await getUserUrls(loggedInUser);
-    console.log(result)
     setUserUrls(result)
   }
 
@@ -65,6 +65,19 @@ export default function page() {
     localStorage.removeItem('user-email')
     setLoggedInUser()
   }
+  async function handleDelete(doc_id) {
+    const result = await deleteUrlRecord(doc_id);
+    if (result != 'error') {
+      toast.success('Url Deleted Successfully !', {
+        duration: 1500
+      })
+    }
+    else {
+      toast.error('error deleting the url !', {
+        duration: 2000
+      })
+    }
+  }
   return (
     <div className="w-screen h-screen bg-black " >
       <nav className="absolute top-0 left-0 w-screen float-right flex flex-row justify-end items-center gap-3 pr-4" >
@@ -107,15 +120,26 @@ export default function page() {
           {userUrls.length > 0 && loggedInUser ?
 
             userUrls.map((item, index) => (
-              <div key={index} onClick={() => {
-                navigator.clipboard.writeText('http://' + window.location.host + "/" + item.url_id)
-                toast.success('copied link to clipboard !', {
-                  duration: 1500
-                })
-              }}
-                className=" last:mb-12 sm:w-full md:w-2/4 p-5 text-left text-white border-2 border-red-400 cursor-pointer"
-              > <h1 className="text-white font-mono ">http://{window.location.host}/{item.url_id}</h1>
-                <h3> {item.url} </h3>
+              <div key={index}
+                className="flex justify-between gap-3 items-center last:mb-12 sm:w-full md:w-2/4 p-5 text-left text-white border-2 border-red-400 cursor-pointer"
+              >
+                <div
+                >
+                  <h1 className="text-white font-mono ">http://{window.location.host}/{item.url_id}</h1>
+                  <h3> {item.url} </h3>
+                </div>
+                <div className="float-right flex gap-4" >
+                  <BsClipboard onClick={() => {
+                    navigator.clipboard.writeText('http://' + window.location.host + "/" + item.url_id)
+                    toast.success('copied link to clipboard !', {
+                      duration: 1500
+                    })
+                  }} className="text-white" size={25} />
+                  <BsTrash className="text-red-400" size={25} onClick={() => {
+                    handleDelete(item.$id)
+                  }} />
+                </div>
+
               </div>
             ))
             :

@@ -5,7 +5,7 @@ import { createUser } from '../../../services/appwrite'
 import { Toaster, toast } from 'react-hot-toast'
 
 export default function page() {
-    if (localStorage.getItem('user-email')) {
+    if (localStorage && localStorage.getItem('user-email')) {
         redirect('/')
     }
     const [email, setEmail] = useState('')

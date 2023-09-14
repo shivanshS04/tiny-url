@@ -11,7 +11,6 @@ export default function page() {
         (async () => {
             var url = await getUrlRecord(params.url_id)
             setResult(url);
-            console.log(url)
         })()
 
     }, [])
