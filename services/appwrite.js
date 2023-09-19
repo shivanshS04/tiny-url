@@ -106,10 +106,10 @@ export async function deleteUrlRecord(doc_id) {
     .deleteDocument("64fc044ee5653df6e0ae", "64fc045f87351bf03f53", doc_id)
     .then(
       (response) => {
-        console.log(response);
         return;
       },
       (error) => {
+        console.log(error);
         return error;
       }
     );
